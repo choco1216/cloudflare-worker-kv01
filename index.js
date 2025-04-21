@@ -65,7 +65,21 @@ export default {
           }
         });
       }
-      // KVストアから取得したconfigからAPIキーを抽出
+      // KVストアから取得した値をJSONパース
+      let config;
+      try {
+        config = JSON.parse(value);
+      } catch (e) {
+        return new Response(JSON.stringify({ error: 'KVデータのJSONパースエラー' }), {
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Access-Control-Allow-Origin': ALLOW_ORIGIN
+          }
+        });
+      }
+      
+      // パースしたconfigからAPIキーを抽出
       let apiKey;
       try {
         apiKey = config.openai_api_key;
